@@ -1,6 +1,6 @@
 <template>
     <div class="films">
-        <Film v-for="(film, index) in resultsFilms" :key="index" :info="film"/>
+        <Film v-for="(film, index) in resultsTotal" :key="index" :info="film"/>
     </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     props: ["filmSearched"], 
     data() {
         return{
-        resultsFilms: [],
+        resultsTotal: [],
         }
     },
     watch: {
@@ -30,16 +30,32 @@ export default {
     },
     methods: {
         genetateFilms() {
-            axios.get('https://api.themoviedb.org/3/search/movie', {
+            let film  = axios.get('https://api.themoviedb.org/3/search/movie', {
                 params: {
                 api_key: '75896a3c3b48da89500c9f72185c3497',
                 query: this.filmSearched,
                 language: 'it-IT',
                 }
             })
+
+            let tv  = axios.get('https://api.themoviedb.org/3/search/tv', {
+                params: {
+                api_key: '75896a3c3b48da89500c9f72185c3497',
+                query: this.filmSearched,
+                language: 'it-IT',
+                }
+            })
+
+            axios.all([film,tv])
             .then( (response) => {
-                this.resultsFilms = response.data.results;
+                let resultsFilms = response[0].data.results;
+                let resultsTv = response[1].data.results;
+
+                this.resultsTotal = resultsFilms.concat(resultsTv)
+
             });
+
+
         }
     },
     
