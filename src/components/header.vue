@@ -1,8 +1,15 @@
 <template>
-    <header>
-        <form>
-            <input type="text" v-model="searchSomething">
-            <button @click.prevent="$emit('search', searchSomething)">Cerca</button>
+    <header class="d-flex justify-content-between p-4">
+        <div class="logo">
+            <img src="https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg" alt="">
+        </div>
+        <form class="d-flex">
+            <input type="text" v-model="searchSomething" placeholder="Crerca Film o Serie TV" class="form-control ">
+            <button
+            class=" btn btn-light ms-3"  
+            @click.prevent="$emit('search', searchSomething)">
+            Cerca
+            </button>
         </form>
         
     </header>
@@ -20,6 +27,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+    img {
+        max-height: 40px;
+    }
 </style>
