@@ -1,9 +1,9 @@
 <template>
-    <div class="films">
-        <div class="film">
+    <div class="films px-4">
+        <div class="film d-flex ">
             <Film v-for="(film, index) in resultsFilm" :key="index" :info="film"/>
         </div>
-        <div class="tv">
+        <div class="tv d-flex ">
             <Film v-for="(film, index) in resultsTv" :key="index" :info="film"/>
         </div>
         
