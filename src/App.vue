@@ -33,4 +33,10 @@ export default {
 
 <style lang="scss">
    @import "./assets/style/common";
+
+  #app{
+    height: 100vh;
+    color: white;
+    background-color: black;
+  }
 </style>
