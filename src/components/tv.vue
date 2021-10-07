@@ -1,8 +1,8 @@
 <template>
 <div class="film-tv mb-4 me-4">
     <div class="info px-3 py-5">
-        <div class="titolo"><strong>Titolo:</strong> {{info.title}}{{info.name}}</div>
-        <div class="titolo-originale"><strong>Titolo originale:</strong> {{info.original_title}}{{info.original_name}}</div>
+        <div class="titolo"><strong>Titolo:</strong>{{info.name}}</div>
+        <div class="titolo-originale"><strong>Titolo originale:</strong>{{info.original_name}}</div>
         <div class="lingua">
             <strong>Lingua:</strong> <img :src="`https://www.unknown.nu/flags/images/${info.original_language}-100`" alt="">
         </div>
@@ -51,16 +51,15 @@ export default {
         }
     },
     created(){
-        axios.get(`https://api.themoviedb.org/3/movie/${this.info.id}/credits?`, {
+        axios.get(`https://api.themoviedb.org/3/tv/${this.info.id}/credits?`, {
             params: {
                 api_key: '75896a3c3b48da89500c9f72185c3497',
             }
         })
         .then((response) => {
-            for (var i = 0; i < 5 ; i ++ ) {
+            for (var i = 0; i < response.data.cast.length ; i ++ ) {
                 this.listActor.push(response.data.cast[i].name)
             }
-
         })
     }
 }

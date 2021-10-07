@@ -4,7 +4,7 @@
             <h2 v-if="resultsFilm != false ">Film</h2>
             <div class="film" id="film">
                 <div class="d-flex flex-nowrap">
-                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film" />
+                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film" :tv="film" />
                 </div>
             </div>
             <button v-if="resultsFilm != false " class="btn scroll-right" @click="scrollRight('film')"><i class="fas fa-arrow-left"></i></button>
@@ -14,7 +14,7 @@
             <h2 v-if="resultsTv != false ">Serie TV</h2>
             <div class="tv" id="tv">
                 <div class="d-flex flex-nowrap">
-                    <Film v-for="(film, index) in resultsTv" :key="index" :info="film"/>
+                    <Tv v-for="(film, index) in resultsTv" :key="index" :info="film"/>
                 </div>
             </div>
             <button v-if="resultsTv != false " class="btn scroll-right" @click="scrollRight('tv')"><i class="fas fa-arrow-left"></i></button>
@@ -28,6 +28,7 @@
 <script>
 import axios from 'axios'
 import Film from "./film.vue"
+import Tv from "./tv.vue"
 
 
 
@@ -35,6 +36,7 @@ export default {
     name: "Films",
     components: {
         Film,
+        Tv,
     },
     props: ["filmSearched"], 
     data() {
@@ -49,16 +51,16 @@ export default {
                 this.genetateFilmTv();
             },
         },
-        resultsFilm: {
-            handler: function() {
-                this.generateactorsFilm();
-            }
-        },
-        resultsTv: {
-            handler: function() {
-                this.generateactorsTv();
-            }
-        },
+        // resultsFilm: {
+        //     handler: function() {
+        //         this.generateactorsFilm();
+        //     }
+        // },
+        // resultsTv: {
+        //     handler: function() {
+        //         this.generateactorsTv();
+        //     }
+        // },
 
     },
     methods: {
@@ -94,43 +96,43 @@ export default {
         },
 
 
-        generateactorsFilm() {
-            this.resultsFilm.forEach(elm => {
-                let attori = []
-                axios.get(`https://api.themoviedb.org/3/movie/${elm.id}/credits?`, {
-                    params: {
-                        api_key: '75896a3c3b48da89500c9f72185c3497',
-                        language: 'it-IT' 
-                    }
-                })
-                .then((response) => {
-                    for (var i = 0; i < 5; i ++ ) {
-                        attori.push(response.data.cast[i].name)
-                    }
-                })
-                elm.actor = attori
-            });
-        },
+        // generateactorsFilm() {
+        //     this.resultsFilm.forEach(elm => {
+        //         let attori = []
+        //         axios.get(`https://api.themoviedb.org/3/movie/${elm.id}/credits?`, {
+        //             params: {
+        //                 api_key: '75896a3c3b48da89500c9f72185c3497',
+        //                 language: 'it-IT' 
+        //             }
+        //         })
+        //         .then((response) => {
+        //             for (var i = 0; i < 5; i ++ ) {
+        //                 attori.push(response.data.cast[i].name)
+        //             }
+        //         })
+        //         elm.actor = attori
+        //     });
+        // },
 
-        generateactorsTv() {
-            this.resultsTv.forEach(elm => {
-                let attori = []
-                axios.get(`https://api.themoviedb.org/3/tv/${elm.id}/credits?`, {
-                    params: {
-                        api_key: '75896a3c3b48da89500c9f72185c3497',
-                        language: 'it-IT' 
-                    }
-                })
-                .then((response) => {
+        // generateactorsTv() {
+        //     this.resultsTv.forEach(elm => {
+        //         let attori = []
+        //         axios.get(`https://api.themoviedb.org/3/tv/${elm.id}/credits?`, {
+        //             params: {
+        //                 api_key: '75896a3c3b48da89500c9f72185c3497',
+        //                 language: 'it-IT' 
+        //             }
+        //         })
+        //         .then((response) => {
                      
-                    for (var i = 0; i < response.data.cast.length; i ++ ) {
-                        attori.push(response.data.cast[i].name)
-                    }
-                })
+        //             for (var i = 0; i < response.data.cast.length; i ++ ) {
+        //                 attori.push(response.data.cast[i].name)
+        //             }
+        //         })
 
-                elm.actor = attori
-            });
-        },
+        //         elm.actor = attori
+        //     });
+        // },
 
         scrollLeft(obj){
            let scrollAmount = 0;
