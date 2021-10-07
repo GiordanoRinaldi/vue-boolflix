@@ -33,6 +33,7 @@ export default {
 
 <style lang="scss">
    @import "./assets/style/common";
+   @import '~@fortawesome/fontawesome-free/css/all.css';
 
   #app{
     height: 100vh;
