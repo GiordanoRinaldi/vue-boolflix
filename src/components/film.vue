@@ -15,8 +15,12 @@
             </div>
         </div> 
         <div class="overview"> 
-            <strong>Descrizione:</strong> 
-            <span v-if="info.overview != false"> {{info.overview}}</span> 
+            <div v-if="info.overview != false">
+                <strong>Descrizione:</strong> {{info.overview}}
+                <br>
+                <strong>Cast: </strong><span v-for="index in  5 " :key="index">{{info.actor[index]}} ,</span> 
+                 
+            </div> 
             <span v-else> Descrizione non disponibile</span> 
         </div>   
         

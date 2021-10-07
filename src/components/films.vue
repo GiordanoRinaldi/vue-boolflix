@@ -4,7 +4,7 @@
             <h2 v-if="resultsFilm != false ">Film</h2>
             <div class="film" id="film">
                 <div class="d-flex flex-nowrap">
-                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film"/>
+                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film" />
                 </div>
             </div>
             <button v-if="resultsFilm != false " class="btn scroll-right" @click="scrollRight('film')"><i class="fas fa-arrow-left"></i></button>
@@ -46,12 +46,24 @@ export default {
     watch: {
         filmSearched: {
             handler: function() {
-                this.genetateTotal()
+                this.genetateFilmTv();
             },
-        }
+        },
+        resultsFilm: {
+            handler: function() {
+                this.generateactorsFilm();
+            }
+        },
+        resultsTv: {
+            handler: function() {
+                this.generateactorsTv();
+            }
+        },
+
     },
     methods: {
-        genetateTotal() {
+        genetateFilmTv() {
+            // parte per cercare film e serie 
             const film  = axios.get('https://api.themoviedb.org/3/search/movie', {
                 params: {
                 api_key: '75896a3c3b48da89500c9f72185c3497',
@@ -76,6 +88,47 @@ export default {
                 this.resultsTv = response[1].data.results;
 
 
+            });
+
+            // fine parte per cercare film serie 
+        },
+
+
+        generateactorsFilm() {
+            this.resultsFilm.forEach(elm => {
+                let attori = []
+                axios.get(`https://api.themoviedb.org/3/movie/${elm.id}/credits?`, {
+                    params: {
+                        api_key: '75896a3c3b48da89500c9f72185c3497',
+                        language: 'it-IT' 
+                    }
+                })
+                .then((response) => {
+                    for (var i = 0; i < 5; i ++ ) {
+                        attori.push(response.data.cast[i].name)
+                    }
+                })
+                elm.actor = attori
+            });
+        },
+
+        generateactorsTv() {
+            this.resultsTv.forEach(elm => {
+                let attori = []
+                axios.get(`https://api.themoviedb.org/3/tv/${elm.id}/credits?`, {
+                    params: {
+                        api_key: '75896a3c3b48da89500c9f72185c3497',
+                        language: 'it-IT' 
+                    }
+                })
+                .then((response) => {
+                     
+                    for (var i = 0; i < response.data.cast.length; i ++ ) {
+                        attori.push(response.data.cast[i].name)
+                    }
+                })
+
+                elm.actor = attori
             });
         },
 
