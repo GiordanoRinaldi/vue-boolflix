@@ -14,7 +14,7 @@
             <h2 v-if="resultsTv != false ">Serie TV</h2>
             <div class="tv" id="tv">
                 <div class="d-flex flex-nowrap">
-                    <Tv v-for="(film, index) in resultsTv" :key="index" :info="film"/>
+                    <Tv v-for="( tv, index) in resultsTv" :key="index" :info="tv"/>
                 </div>
             </div>
             <button v-if="resultsTv != false " class="btn scroll-right" @click="scrollRight('tv')"><i class="fas fa-arrow-left"></i></button>

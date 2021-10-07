@@ -18,7 +18,7 @@
             <div v-if="info.overview != false">
                 <strong>Descrizione:</strong> {{info.overview}}
                 <br>
-                <strong>Cast: </strong><span v-for="index in 5" :key="index">{{listActor[index]}} </span>
+                <strong v-if="listActor.length > 0" >Cast: </strong><span v-for="index in 5" :key="index">{{listActor[index]}} </span>
                  
             </div> 
             <span v-else> Descrizione non disponibile</span> 
@@ -50,18 +50,23 @@ export default {
             return Math.ceil(num / 2)
         }
     },
-    created(){
-        axios.get(`https://api.themoviedb.org/3/movie/${this.info.id}/credits?`, {
-            params: {
-                api_key: '75896a3c3b48da89500c9f72185c3497',
+    watch: {
+        info : {
+            handler: function(){
+                axios.get(`https://api.themoviedb.org/3/movie/${this.info.id}/credits?`, {
+                    params: {
+                        api_key: '75896a3c3b48da89500c9f72185c3497',
+                    }
+                })
+                .then((response) => {
+                    this.listActor=[];
+                    for (var i = 0; i < response.data.cast.length ; i ++ ) {
+                        this.listActor.push(response.data.cast[i].name)
+                    }
+                }) 
             }
-        })
-        .then((response) => {
-            for (var i = 0; i < 5 ; i ++ ) {
-                this.listActor.push(response.data.cast[i].name)
-            }
-
-        })
+            
+        }
     }
 }
 </script>
