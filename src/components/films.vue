@@ -1,23 +1,25 @@
 <template>
     <div class="films mx-4">
-        <h2 v-if="resultsFilm != false ">Film</h2>
-        <div class="film" id="film">
-            <div class="d-flex flex-nowrap">
-                <Film v-for="(film, index) in resultsFilm" :key="index" :info="film"/>
+        <div class="container-film">
+            <h2 v-if="resultsFilm != false ">Film</h2>
+            <div class="film" id="film">
+                <div class="d-flex flex-nowrap">
+                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film"/>
+                </div>
             </div>
             <button v-if="resultsFilm != false " class="btn scroll-right" @click="scrollRight('film')"><i class="fas fa-arrow-left"></i></button>
             <button v-if="resultsFilm != false " class="btn scroll-left" @click="scrollLeft('film')"><i class="fas fa-arrow-right"></i></button>
         </div>
-        <h2 v-if="resultsTv != false ">Serie TV</h2>
-        <div class="tv" id="tv">
-            <div class="d-flex flex-nowrap">
-                <Film v-for="(film, index) in resultsTv" :key="index" :info="film"/>
+        <div class="container-tv">
+            <h2 v-if="resultsTv != false ">Serie TV</h2>
+            <div class="tv" id="tv">
+                <div class="d-flex flex-nowrap">
+                    <Film v-for="(film, index) in resultsTv" :key="index" :info="film"/>
+                </div>
             </div>
             <button v-if="resultsTv != false " class="btn scroll-right" @click="scrollRight('tv')"><i class="fas fa-arrow-left"></i></button>
             <button v-if="resultsTv != false " class="btn scroll-left" @click="scrollLeft('tv')"><i class="fas fa-arrow-right"></i></button>
         </div>
-        
-        
         
         
     </div>
@@ -112,8 +114,11 @@ export default {
     .film, .tv {
         position: relative;
         overflow-x: hidden;
+    }
+    .container-film, .container-tv {
+        position: relative;
         .scroll-left, .scroll-right{
-            position: sticky;
+            position: absolute;
             background-color: white;
             color: black;
             width: 50px;
@@ -130,8 +135,9 @@ export default {
             left: 0vw;
             bottom: 15vw;
         }
-    }
 
+    }
+    
     
 }
 
