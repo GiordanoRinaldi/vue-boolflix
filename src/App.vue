@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Header @search="searchSomething"/>
+    <Header @search="searchSomething"  />
     <main>
-      <Films :filmSearched="searched"/>
+      <Films :filmSearched="searched" />
     </main>
   </div>
 </template>
@@ -21,6 +21,7 @@ export default {
   data(){
     return{
       searched: "",
+
     }
   },
   methods: {

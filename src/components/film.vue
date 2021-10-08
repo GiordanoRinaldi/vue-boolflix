@@ -17,8 +17,13 @@
         <div class="overview"> 
             <div v-if="info.overview != false">
                 <strong>Descrizione:</strong> {{info.overview}}
-                <br>
-                <strong v-if="listActor.length > 0" >Cast: </strong><span v-for="(list, index) in 5" :key="index">{{listActor[index]}} </span>
+                <div>
+                    <strong v-if="listActor.length > 0" >Cast: </strong><span v-for="(list, index) in 5" :key="index">{{listActor[index]}} </span>
+                </div>
+                <div>
+                  <strong>Genere: </strong><span v-for="(list, index) in listGenres" :key="index ">{{listGenres[index]}}, </span>  
+                </div>
+                
                  
             </div> 
             <span v-else> Descrizione non disponibile</span> 
@@ -39,10 +44,11 @@ import axios from 'axios'
 
 export default {
     name: "Film",
-    props: ["info"],
+    props: ["info", "list"],
     data() {
         return{
-            listActor: []
+            listActor: [],
+            listGenres:[],
         }
     },
     methods: {
@@ -61,17 +67,35 @@ export default {
                     this.listActor.push(response.data.cast[i].name + ',')
                 }
             }) 
+        },
+        createList(){
+            const listFilm = []
+            this.info.genre_ids.forEach((elm)=> {
+                listFilm.push(elm)
+            });
+            this.listGenres = []
+            this.list.forEach(elm => {
+                if(listFilm.includes(elm.id)){
+                    this.listGenres.push(elm.name)
+                }
+            });
         }
     },
     watch: {
         info : {
             handler: function(){
-                this.generateActor()
+                this.generateActor();  
+            }
+        },
+        list : {
+            handler: function(){
+                this.createList()
             }
         }
     },
     created(){
-        this.generateActor()
+        this.generateActor();
+        this.createList();
     }
 }
 </script>

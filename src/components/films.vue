@@ -1,10 +1,16 @@
 <template>
     <div class="films mx-4">
+        <div class="select-film">
+            <select name="" id="">
+                <option value="">Filtra per genere</option>
+                <option v-for="(genre, index) in listGenreMovies.length" :key="index" value="">{{genre[index]}}</option>
+            </select>
+        </div>
         <div class="container-film">
             <h2 v-if="resultsFilm != false ">Film</h2>
             <div class="film" id="film">
                 <div class="d-flex flex-nowrap">
-                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film" :tv="film" />
+                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film" :list="listGenreMovies"/>
                 </div>
             </div>
             <button v-if="resultsFilm != false " class="btn scroll-right" @click="scrollRight('film')"><i class="fas fa-arrow-left"></i></button>
@@ -14,14 +20,12 @@
             <h2 v-if="resultsTv != false ">Serie TV</h2>
             <div class="tv" id="tv">
                 <div class="d-flex flex-nowrap">
-                    <Tv v-for="( tv, index) in resultsTv" :key="index" :info="tv"/>
+                    <Tv v-for="( tv, index) in resultsTv" :key="index" :info="tv" :list="listGenreTVs"/>
                 </div>
             </div>
             <button v-if="resultsTv != false " class="btn scroll-right" @click="scrollRight('tv')"><i class="fas fa-arrow-left"></i></button>
             <button v-if="resultsTv != false " class="btn scroll-left" @click="scrollLeft('tv')"><i class="fas fa-arrow-right"></i></button>
         </div>
-        
-        
     </div>
 </template>
 
@@ -43,6 +47,10 @@ export default {
         return{
         resultsFilm: [],
         resultsTv: [],
+        listGenreMovies: [],
+        listGenreMoviesOnlyName:[],
+        listGenreTVs: [],
+
         }
     },
     watch: {
@@ -84,16 +92,53 @@ export default {
 
             axios.all([film,tv])
             .then( (response) => {
-
                 this.resultsFilm = response[0].data.results;
-
                 this.resultsTv = response[1].data.results;
 
+                const genreListFilm = [];
+                this.resultsFilm.forEach(
+                    (elm) => {
+                        elm.genre_ids.forEach(
+                            (elm) => {
+                                if (genreListFilm.includes(elm)){
+                                genreListFilm.push(elm)
+                                }
+                            }
+                        )
+                    }
+                );
 
-            });
+                const genreListTV = [];
+                this.resultsTv.forEach(
+                    (elm) => {
+                        elm.genre_ids.forEach(
+                            (elm) => {
+                                if (genreListTV.includes(elm)){
+                                genreListTV.push(elm)
+                                }
+                            }
+                        )
+                    }
+                );
+
+                
+                axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=75896a3c3b48da89500c9f72185c3497&language=it-IT')
+                .then((response) => {
+                    this.listGenreMovies = response.data.genres
+                });
+
+                axios.get('https://api.themoviedb.org/3/genre/tv/list?api_key=75896a3c3b48da89500c9f72185c3497&language=it-IT')
+                .then((response) => {
+                    this.listGenreTVs = response.data.genres
+                })
+                
+            })
+            
 
             // fine parte per cercare film serie 
         },
+
+        
 
 
         // generateactorsFilm() {
