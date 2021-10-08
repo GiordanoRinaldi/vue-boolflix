@@ -1,16 +1,16 @@
 <template>
     <div class="films mx-4">
-        <div class="select-film">
-            <select name="" id="">
-                <option value="">Filtra per genere</option>
-                <option v-for="(genre, index) in listGenreMovies.length" :key="index" value="">{{genre[index]}}</option>
-            </select>
-        </div>
         <div class="container-film">
             <h2 v-if="resultsFilm != false ">Film</h2>
+            <div v-if="resultsFilm != false " class="select-film">
+                <select class="form-select" aria-label="Default select example" v-model="genreMovie">
+                    <option value="">Filtra per genere</option>
+                    <option v-for="(genre, index) in listGenreMoviesOnlyName.length" :key="index" :value="listGenreMoviesOnlyName[index]">{{listGenreMoviesOnlyName[index]}}</option>
+                </select>
+            </div>
             <div class="film" id="film">
-                <div class="d-flex flex-nowrap">
-                    <Film v-for="(film, index) in resultsFilm" :key="index" :info="film" :list="listGenreMovies"/>
+                <div  class="d-flex flex-nowrap">
+                    <Film @genresfilm="selectGenre"  v-for="(film, index) in resultsFilm" :key="index" :info="film" :list="listGenreMovies"/>
                 </div>
             </div>
             <button v-if="resultsFilm != false " class="btn scroll-right" @click="scrollRight('film')"><i class="fas fa-arrow-left"></i></button>
@@ -18,6 +18,12 @@
         </div>
         <div class="container-tv">
             <h2 v-if="resultsTv != false ">Serie TV</h2>
+            <div v-if="resultsTv != false" class="select-tv">
+                <select class="form-select" aria-label="Default select example" v-model="genreTV">
+                    <option value="">Filtra per genere</option>
+                    <option v-for="(genre, index) in listGenreTVsOnlyName.length" :key="index" :value="listGenreMoviesOnlyName[index]">{{listGenreMoviesOnlyName[index]}}</option>
+                </select>
+            </div>
             <div class="tv" id="tv">
                 <div class="d-flex flex-nowrap">
                     <Tv v-for="( tv, index) in resultsTv" :key="index" :info="tv" :list="listGenreTVs"/>
@@ -48,9 +54,12 @@ export default {
         resultsFilm: [],
         resultsTv: [],
         listGenreMovies: [],
+        genreMovies: [],
         listGenreMoviesOnlyName:[],
         listGenreTVs: [],
-
+        listGenreTVsOnlyName: [],
+        genreMovie: "",
+        genreTV: "",
         }
     },
     watch: {
@@ -58,6 +67,16 @@ export default {
             handler: function() {
                 this.genetateFilmTv();
             },
+        },
+        listGenreMovies: {
+            handler: function() {
+                this.showOnlyNameMovie()
+            }
+        },
+        listGenreTVs: {
+            handler: function() {
+                this.showOnlyNameTVs()
+            }
         },
         // resultsFilm: {
         //     handler: function() {
@@ -138,8 +157,20 @@ export default {
             // fine parte per cercare film serie 
         },
 
-        
+        selectGenre(genrelist){
+            this.genreMovies.push(genrelist)
+        },
 
+        showOnlyNameMovie(){
+            this.listGenreMovies.forEach((elm) => {
+                this.listGenreMoviesOnlyName.push(elm.name)
+            })
+        },
+        showOnlyNameTVs(){
+            this.listGenreTVs.forEach((elm) => {
+                this.listGenreTVsOnlyName.push(elm.name)
+            })
+        },
 
         // generateactorsFilm() {
         //     this.resultsFilm.forEach(elm => {
@@ -239,6 +270,10 @@ export default {
     }
     
     
+}
+
+.form-select{
+    width: 10%;
 }
 
 </style>

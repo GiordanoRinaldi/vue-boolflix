@@ -78,7 +78,15 @@ export default {
                     this.listGenres.push(elm.name)
                 }
             });
+
+            
+        },
+        emitList(){
+            if(this.listGenres != ''){
+                this.$emit('genresTV', this.listGenres)
+            }
         }
+
     },
     watch: {
         info : {
@@ -90,11 +98,17 @@ export default {
             handler: function(){
                 this.createList()
             }
+        },
+        listGenres : {
+            handler: function(){
+              this.emitList();  
+            }
         }
     },
     created(){
         this.generateActors();
         this.createList();
+        
     }
 }
 </script>

@@ -21,7 +21,7 @@
                     <strong v-if="listActor.length > 0" >Cast: </strong><span v-for="(list, index) in 5" :key="index">{{listActor[index]}} </span>
                 </div>
                 <div>
-                  <strong>Genere: </strong><span v-for="(list, index) in listGenres" :key="index ">{{listGenres[index]}}, </span>  
+                  <strong>Genere: </strong><span v-for="(list, index) in listGenres" :key="index " >{{listGenres[index]}}, </span>  
                 </div>
                 
                  
@@ -79,7 +79,17 @@ export default {
                     this.listGenres.push(elm.name)
                 }
             });
+
+            
+
+        },
+         emitList(){
+             if(this.listGenres != ''){
+               this.$emit('genresfilm', this.listGenres)  
+             }
+            
         }
+
     },
     watch: {
         info : {
@@ -90,6 +100,11 @@ export default {
         list : {
             handler: function(){
                 this.createList()
+            }
+        },
+        listGenres : {
+            handler: function(){
+              this.emitList();  
             }
         }
     },
