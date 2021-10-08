@@ -1,6 +1,6 @@
 <template>
     <header class="d-flex justify-content-between p-4">
-        <div class="logo">
+        <div class="logo" @click="reload()">
             <img src="https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg" alt="">
         </div>
         <form class="d-flex">
@@ -22,12 +22,20 @@ export default {
         return{
             searchSomething: "",    
         }
+    },
+    methods: {
+        reload() {
+            location.reload()
+        }
     }
     
 }
 </script>
 
 <style lang="scss" scoped>
+    .logo{
+        cursor: pointer;
+    }
     img {
         height: 40px;
     }
