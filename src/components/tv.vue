@@ -18,7 +18,7 @@
             <div v-if="info.overview != false">
                 <strong>Descrizione:</strong> {{info.overview}}
                 <br>
-                <strong v-if="listActor.length > 0" >Cast: </strong><span v-for="index in 5" :key="index">{{listActor[index]}} </span>
+                <strong v-if="listActor.length > 0" >Cast: </strong><span v-for="list, index in 5" :key="index">{{listActor[index]}} </span>
                  
             </div> 
             <span v-else> Descrizione non disponibile</span> 
@@ -48,26 +48,30 @@ export default {
     methods: {
         changeInStars(num){
             return Math.ceil(num / 2)
+        },
+        generateActors(){
+            axios.get(`https://api.themoviedb.org/3/tv/${this.info.id}/credits?`, {
+                params: {
+                    api_key: '75896a3c3b48da89500c9f72185c3497',
+                }
+            })
+            .then((response) => {
+                this.listActor=[];
+                for (var i = 0; i < response.data.cast.length ; i ++ ) {
+                    this.listActor.push(response.data.cast[i].name)
+                }
+            }) 
         }
     },
     watch: {
         info : {
             handler: function(){
-                axios.get(`https://api.themoviedb.org/3/tv/${this.info.id}/credits?`, {
-                    params: {
-                        api_key: '75896a3c3b48da89500c9f72185c3497',
-                    }
-                })
-                .then((response) => {
-                    this.listActor=[];
-                    for (var i = 0; i < response.data.cast.length ; i ++ ) {
-                        this.listActor.push(response.data.cast[i].name)
-                    }
-                }) 
-            }
-            
+                this.generateActors()
+            } 
         }
-        
+    },
+    created(){
+        this.generateActors()
     }
 }
 </script>
